@@ -21,11 +21,13 @@ The PinOut of the Iron is the next:
 El Pinout del Soldador es:
 ![Logo](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Yaxun%20Yx936m%20PinOut.png)
 Legend: (Image not at scale)
+The connector is an GX16 aviator type (I think) but since this is "economic" i will make the connector myself or just cut it.
 PE : Protective earth goes directly to the metal part of the Iron
 Heater : just the Heater its around 12 Ohm +/- 1 Ohm
 Termocuple : 1.3 Ohm at room temperature when heated up goes to 0 i will need time to figure this out.
 
 Leyenda: (Imagen fuera de escala)
+El connector es un GX16 de tipo aviador (Creo) pero como este es un proyecto "Exonomico" voy a fabricar el conector yo o simplemente cortarlo.
 PE : Tierra va directamente a la parte metálica del soldador
 Calentador : solo el calentador su alrededor de 12 Ohm +/- 1 Ohm
 Termocupla : 1.3 Ohm a temperatura ambiente cuando se calienta va a 0 voy a necesitar algún tiempo para averiguar esto.
