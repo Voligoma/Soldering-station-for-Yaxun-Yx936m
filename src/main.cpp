@@ -7,7 +7,7 @@
 #include <Adafruit_Sensor.h>
 #include <RotaryEncoder.h>
 
-//LiquidCrystal_I2C lcd(0x27,16,2);
+LiquidCrystal_I2C lcd(0x27,16,2);
 #define DHTTYPE DHT11
 //Pins & Variables
 #define DHTPIN 2
@@ -98,7 +98,7 @@ void highVoltageCheck(){
 void intTempCheck(){
         
      dhtInt = dht.readTemperature();
-     /*Serial.println("Temp es: ");
+     Serial.println("Temp es: ");
      Serial.print(dhtInt);
      if (dhtInt > maxIntTemp){
         Serial.println("alta temperatura");
@@ -106,7 +106,7 @@ void intTempCheck(){
         errCode = 4;
         emergencyStop = true;
         EmergenciaCheck();
-     }*/
+     }
 }
 void checkSystemStatus(){
       //      Serial.println("Checkeando...");
@@ -119,25 +119,24 @@ void store(){
             Serial.println("Stand By");
     set = 0;
     Pid1.Compute();
-   // lcd.clear();
-   // lcd.setCursor(5,1);lcd.print("Stand");
-   // lcd.setCursor(7,0);lcd.print("By");
+    lcd.clear();
+    lcd.setCursor(5,1);lcd.print("Stand");
+    lcd.setCursor(7,0);lcd.print("By");
     delay(1000);
     checkSystemStatus();
 }
 void off(){
             Serial.println("Off");
-   /* lcd.clear();
+   lcd.clear();
     lcd.setCursor(6,1);lcd.print("OFF");
-    */
+    
     delay(500);
     checkSystemStatus();
 }
 void lcdDefault(){
-   /* lcd.clear();
+    lcd.clear();
     lcd.setCursor(0,1);lcd.print("PRESET T: ");  
     lcd.setCursor(0,0);lcd.print("T ACTUAL: "); 
-    */
 }
 void encoder1(){
     encoder.tick();
@@ -155,27 +154,26 @@ void encoder1(){
 
 void setup() {
     Serial.begin (9600);
-   // Serial.println("Iniciando....");
+    Serial.println("Iniciando....");
     pinMode(Led, OUTPUT);
     pinMode(Soldador, OUTPUT);
     pinMode(Sonda, INPUT);
     pinMode(Store, INPUT);
     pinMode(Emerg, INPUT);
     pinMode(vIn, INPUT);
-       // Serial.print(" pinmode listo...");
+    Serial.print(" pinmode listo...");
     Pid1.SetMode(AUTOMATIC);
-         //   Serial.print(" PID listo....");
-  /* lcd.backlight();
+    Serial.print(" PID listo....");
+    lcd.backlight();
     lcd.init();
     lcd.clear();
     lcd.setCursor(0,1);lcd.print("Buan");
-    lcd.setCursor(3,0);lcd.print("Industries");
-    */ 
-             //   Serial.print(" LCD listo....");
+    lcd.setCursor(3,0);lcd.print("Industries"); 
+    Serial.print(" LCD listo....");
     delay(1500);
     lcdDefault();
     dht.begin();
-    //Serial.print(" listo");
+    Serial.print(" listo");
     digitalWrite(Led, HIGH);
     delay (500);
     digitalWrite(Led, LOW);
@@ -185,7 +183,6 @@ void setup() {
 }
 
 void loop() {
-    //Serial.println("loop");
     checkSystemStatus();
     int InSonda = analogRead(Sonda);
   // int InPot = analogRead(Pot);
@@ -201,8 +198,8 @@ void loop() {
     Serial.print(",");    
     Serial.println(PWMOUT);//solo depuracion
     PWMOUT = map(out, 0, 480, PWMMIN, PWMMAX);
-   // lcd.setCursor(10,1);lcd.print(set);
-   // lcd.setCursor(10,0);lcd.print(temp);
+    lcd.setCursor(10,1);lcd.print(set);
+    lcd.setCursor(10,0);lcd.print(temp);
     analogWrite(Soldador, PWMOUT);
     lcdDefault();
     Pid1.Compute();
