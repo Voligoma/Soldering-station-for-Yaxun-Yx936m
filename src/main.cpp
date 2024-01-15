@@ -53,21 +53,21 @@ void EmergenciaCheck(){
         Serial.println("Emergencia");
         errCode = 1;
         set = 0;
-       /* lcd.clear();
+        lcd.clear();
         lcd.setCursor(0,1);lcd.print("Modo");
-        lcd.setCursor(0,0);lcd.print("Emergencia");*/
+        lcd.setCursor(0,0);lcd.print("Emergencia");
         emergencyStop = true;
     }
         while (emergencyStop == true){
         set = 0;
         Pid1.Compute();    
-       // lcd.clear();
+        lcd.clear();
         delay(250);
         digitalWrite(Led, HIGH);
         delay(1000);
         digitalWrite(Led, LOW);
-       // lcd.setCursor(0,1);lcd.print("Modo  " + errCode);
-       // lcd.setCursor(0,0);lcd.print("Emergencia");
+        lcd.setCursor(0,1);lcd.print("Modo  " + errCode);
+        lcd.setCursor(0,0);lcd.print("Emergencia");
 }
 }
 void lowVoltageCheck(){
@@ -205,6 +205,7 @@ void loop() {
     Pid1.Compute();
    while (Store == HIGH){
     store();
+    checkSystemStatus();
    }
    checkSystemStatus();
    while (set == 0){
