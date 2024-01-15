@@ -24,6 +24,10 @@ Este es mi primer proyecto serio en arduino así que por favor si ves errores y 
 
 ## Documentation / Documentación
 
+I am working on documenting the whole process and specially the electronics part. The code is written in some parts in Spanish (like comments and some functions/variables) and others in English.
+
+Estoy trabajando en documentar todo el proceso y en especial la parte de la electronica. Ademas cabe aclarar que el codigo esta escrito en partes en español (Como comentarios y algunas funciones/variables) y otras en ingles.
+
 The PinOut of the Iron is the next:
 WIP
 El Pinout del Soldador es:
