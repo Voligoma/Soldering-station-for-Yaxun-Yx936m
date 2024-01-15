@@ -28,6 +28,10 @@ I am working on documenting the whole process and specially the electronics part
 
 Estoy trabajando en documentar todo el proceso y en especial la parte de la electronica. Ademas cabe aclarar que el codigo esta escrito en partes en español (Como comentarios y algunas funciones/variables) y otras en ingles.
 
+There is a branch that is made to work with a potentiometer instead of an encoder. It should be noted that it is not tested at all, so it is only for those who know what they are doing.
+
+hay una branch que esta echa para funcionar con un potenciómetro en vez de un encoder cabe aclarar que no esta para nada testeada a si que es solo para el que sabe que está haciendo.
+
 The PinOut of the Iron is the next:
 WIP
 El Pinout del Soldador es:
