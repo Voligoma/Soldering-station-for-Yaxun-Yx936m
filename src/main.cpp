@@ -5,7 +5,7 @@
 #include <LiquidCrystal_I2C.h>
 #include <DHT.h>
 #include <Adafruit_Sensor.h>
-#include <RotaryEncoder.h>
+//#include <RotaryEncoder.h>
 
 LiquidCrystal_I2C lcd(0x27,16,2);
 #define DHTTYPE DHT11
@@ -14,11 +14,11 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 #define Led 3
 #define Soldador 9
 #define Sonda A2
-//#define Pot A3
+#define Pot A3
 #define Store 4
 #define Emerg 7
 #define vIn A1
-RotaryEncoder encoder(A0, A3);
+//RotaryEncoder encoder(A0, A3);
 DHT dht(DHTPIN, DHTTYPE);
 const int PWMMIN = 0;
 const int PWMMAX = 255;
@@ -53,21 +53,21 @@ void EmergenciaCheck(){
         Serial.println("Emergencia");
         errCode = 1;
         set = 0;
-       /* lcd.clear();
+       lcd.clear();
         lcd.setCursor(0,1);lcd.print("Modo");
-        lcd.setCursor(0,0);lcd.print("Emergencia");*/
+        lcd.setCursor(0,0);lcd.print("Emergencia");
         emergencyStop = true;
     }
         while (emergencyStop == true){
         set = 0;
         Pid1.Compute();    
-       // lcd.clear();
+        lcd.clear();
         delay(250);
         digitalWrite(Led, HIGH);
         delay(1000);
         digitalWrite(Led, LOW);
-       // lcd.setCursor(0,1);lcd.print("Modo  " + errCode);
-       // lcd.setCursor(0,0);lcd.print("Emergencia");
+        lcd.setCursor(0,1);lcd.print("Modo  " + errCode);
+        lcd.setCursor(0,0);lcd.print("Emergencia");
 }
 }
 void lowVoltageCheck(){
@@ -138,19 +138,6 @@ void lcdDefault(){
     lcd.setCursor(0,1);lcd.print("PRESET T: ");  
     lcd.setCursor(0,0);lcd.print("T ACTUAL: "); 
 }
-void encoder1(){
-    encoder.tick();
-    newPos = encoder.getPosition();
-    if(newPos > oldPos){
-        set = set + 20;
-    }
-    else if(newPos < oldPos){
-        set = set - 20;
-        while(set < 0){
-            set ++;
-        }
-    }
-}
 
 void setup() {
     Serial.begin (9600);
@@ -185,11 +172,11 @@ void setup() {
 void loop() {
     checkSystemStatus();
     int InSonda = analogRead(Sonda);
-  // int InPot = analogRead(Pot);
+    int InPot = analogRead(Pot);
   temp = map(InSonda, 0, 1023, 0, 500);
   //  temp = 25;
-  //  set = map(InPot, 0, 1023, 0, 480);
-    encoder1();
+    set = map(InPot, 0, 1023, 0, 480);
+   // encoder1();
     Pid1.Compute();
     delay(100); //solo depuracion
     Serial.print(out); //solo depuracion
