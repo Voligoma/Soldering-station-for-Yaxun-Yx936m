@@ -1,4 +1,4 @@
-# Soldering Station for Yaxun Yx936m iron / Estación de soldadura para el soldador Yaxun Yx936m
+# DIY Soldering Station for Yaxun Yx936m iron / Estación de Soldadura para el soldador Yaxun Yx936m DIY
 
 An "Economical" Soldering station for the Yaxun Yx936m Iron.
 This is my first Serious project in arduino so please if you see errors and/or bad coding practices plese open an issue or make the changes in a commit.
@@ -20,6 +20,7 @@ The PinOut of the Iron is the next:
 
 El Pinout del Soldador es:
 ![Logo](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Yaxun%20Yx936m%20PinOut.png)
+
 Legend: (Image not at scale)
 The connector is an GX16 aviator type (I think) but since this is "economic" i will make the connector myself or just cut it.
 PE : Protective earth goes directly to the metal part of the Iron
