@@ -1,4 +1,4 @@
-# Soldering Station for Yaxun Yx936m iron / Estación de soldadura para el soldador Yaxun Yx936m
+# DIY Soldering Station for Yaxun Yx936m iron / Estación de Soldadura para el soldador Yaxun Yx936m DIY
 
 An "Economical" Soldering station for the Yaxun Yx936m Iron.
 This is my first Serious project in arduino so please if you see errors and/or bad coding practices plese open an issue or make the changes in a commit.
