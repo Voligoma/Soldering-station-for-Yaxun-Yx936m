@@ -47,6 +47,17 @@ double temp, set, out;
 double Kp=1, Ki=0, Kd=0;
 PID Pid1(&temp, &out, &set, Kp, Ki, Kd, DIRECT);
 //Funciones
+
+byte degree[8] = {
+	0b11100,
+	0b10100,
+	0b11100,
+	0b00000,
+	0b00000,
+	0b00000,
+	0b00000,
+	0b00000
+};
 void EmergenciaCheck(){
     if (Emerg == HIGH)
     {
@@ -135,8 +146,10 @@ void off(){
 }
 void lcdDefault(){
     lcd.clear();
-    lcd.setCursor(0,1);lcd.print("PRESET T: ");  
-    lcd.setCursor(0,0);lcd.print("T ACTUAL: "); 
+    lcd.setCursor(0,1);lcd.print("PRESET: ");  
+    lcd.setCursor(0,0);lcd.print("ACTUAL: "); 
+    lcd.setCursor(10,0);lcd.write(byte(0)); 
+    lcd.setCursor(10,0);lcd.write(byte(0));     
 }
 void encoder1(){
     encoder.tick();
@@ -166,6 +179,7 @@ void setup() {
     Serial.print(" PID listo....");
     lcd.backlight();
     lcd.init();
+    lcd.createChar(0, degree);
     lcd.clear();
     lcd.setCursor(0,1);lcd.print("Buan");
     lcd.setCursor(3,0);lcd.print("Industries"); 
@@ -198,8 +212,8 @@ void loop() {
     Serial.print(",");    
     Serial.println(PWMOUT);//solo depuracion
     PWMOUT = map(out, 0, 480, PWMMIN, PWMMAX);
-    lcd.setCursor(10,1);lcd.print(set);
-    lcd.setCursor(10,0);lcd.print(temp);
+    lcd.setCursor(7,1);lcd.print(set);
+    lcd.setCursor(7,0);lcd.print(temp);
     analogWrite(Soldador, PWMOUT);
     lcdDefault();
     Pid1.Compute();
