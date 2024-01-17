@@ -189,10 +189,10 @@ void setup() {
     dht.begin();
     Serial.print(" listo");
     digitalWrite(Led, HIGH);
-    delay (500);
+    delay (1000);
     digitalWrite(Led, LOW);
     digitalWrite(Led, HIGH);
-    delay (500);
+    delay (1000);
     digitalWrite(Led, LOW);
 }
 
