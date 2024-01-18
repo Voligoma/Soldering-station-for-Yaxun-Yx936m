@@ -45,9 +45,9 @@ Termocupla : Este tipo de termocupla especifico genera una pequeña tension (uno
 ### Amplifier / Amplificador
 Section under work/ sección en proceso
 
-As mentioned on the PinOut section we need to amplify the output of the thermocuple ,after some investigatión i'v come to a conclusion to use an OPAMP (Operational amplifier) probably a non inverting one or well that's what chat-gpt said xD.
+As mentioned on the PinOut section we need to amplify the output of the thermocuple ,after some investigatión i'v come to a conclusion to use an OPAMP (Operational amplifier) probably a non inverting one or well that's what gpt said xD.
 
-Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional) probablemente uno non inverting (no se como traducir eso) o bueno eso es lo que chat-gpt dijo xD.
+Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional) probablemente uno non inverting (no se como traducir eso) o bueno eso es lo que gpt dijo xD.
 
 
 
