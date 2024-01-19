@@ -45,9 +45,17 @@ Termocupla : Este tipo de termocupla especifico genera una pequeña tension (uno
 ### Amplifier / Amplificador
 Section under work/ sección en proceso
 
-As mentioned on the PinOut section we need to amplify the output of the thermocuple ,after some investigatión i'v come to a conclusion to use an OPAMP (Operational amplifier) probably a non inverting one or well that's what gpt said xD.
+As mentioned on the PinOut section we need to amplify the output of the thermocuple ,after some investigatión i'v come to a conclusion to use an non inverting OPAMP (Operational amplifier).
 
-Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional) probablemente uno non inverting (no se como traducir eso) o bueno eso es lo que gpt dijo xD.
+What the heck is an Operational Amplifier? Its a type of amplifier that is more stable than a transistor for some impedance stuff.
+The formula to calculate the gain of the opamp is: R1 = Ri R2 = Rf
+
+Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional no invirtiente?).
+
+Que carajo es un amplificador operacional? Es un tipo des amplificador que tiende a ser maás estable que un transistor deido a algunos temas de impadancia.
+
+La formula para el calculo de ganancia es: R1 = Ri R2 = Rf
+
 
 
 
