@@ -50,8 +50,9 @@ As mentioned on the PinOut section we need to amplify the output of the thermocu
 What the heck is an Operational Amplifier? Its a type of amplifier that is more stable than a transistor for some impedance stuff.
 The formula to calculate the gain of the opamp is: 
 ![img](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/CodeCogsEqn%20(1).png)
- ![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
- 
+
+![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
+
  R1 = Ri R2 = Rf
 
 Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional no invirtiente?).
@@ -60,7 +61,8 @@ Que carajo es un amplificador operacional? Es un tipo des amplificador que tiend
 
 La formula para el calculo de ganancia es:
 ![img](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/CodeCogsEqn%20(1).png)
- ![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
+
+![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
 
  R1 = Ri R2 = Rf
 
