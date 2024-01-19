@@ -51,7 +51,7 @@ What the heck is an Operational Amplifier? Its a type of amplifier that is more 
 The formula to calculate the gain of the opamp is: 
 ![img](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/CodeCogsEqn%20(1).png)
 
-![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
+![img1](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png)
 
  R1 = Ri R2 = Rf
 
@@ -62,7 +62,7 @@ Que carajo es un amplificador operacional? Es un tipo des amplificador que tiend
 La formula para el calculo de ganancia es:
 ![img](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/CodeCogsEqn%20(1).png)
 
-![img][https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png]
+![img1](https://raw.githubusercontent.com/Voligoma/Soldering-station-for-Yaxun-Yx936m/main/img/Montage_AOP_non-inverseur.png)
 
  R1 = Ri R2 = Rf
 
