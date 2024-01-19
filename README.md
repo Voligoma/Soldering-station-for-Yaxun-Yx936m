@@ -55,6 +55,8 @@ The formula to calculate the gain of the opamp is:
 
  R1 = Ri R2 = Rf
 
+ To calculate the gain needed we just divide the needed voltage by our voltage 
+
 Como mencioné en la sección de pinout necesitamos amplificar la salida de la termocupla, despues de un poco de investigación llegué a la conclusión de que hay que usar un OPAMP (amplificador Operacional no invirtiente?).
 
 Que carajo es un amplificador operacional? Es un tipo des amplificador que tiende a ser maás estable que un transistor deido a algunos temas de impadancia.
@@ -66,6 +68,7 @@ La formula para el calculo de ganancia es:
 
  R1 = Ri R2 = Rf
 
+Para calcular la ganancia de solo debemos dividir la tension objetivo sobre nuestra tensión
 
 
 
