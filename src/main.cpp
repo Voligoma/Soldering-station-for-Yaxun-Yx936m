@@ -5,9 +5,9 @@
 #include <LiquidCrystal_I2C.h>
 #include <DHT.h>
 #include <Adafruit_Sensor.h>
-#include <RotaryEncoder.h>
 
-LiquidCrystal_I2C lcd(0x27,16,2);
+LiquidCrystal_I2C lcd(0x27,20,4);
+
 #define DHTTYPE DHT11
 //Pins & Variables
 #define DHTPIN 2
@@ -18,8 +18,16 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 #define Store 4
 #define Emerg 7
 #define vIn A1
-RotaryEncoder encoder(A0, A3);
 DHT dht(DHTPIN, DHTTYPE);
+
+//Encoder
+int encoderPinA = 8; // CLK pin
+int encoderPinB = 9; // DT pin
+int botonEncoder = 10; // SW pin
+int count = 0;
+int encoderPinA_prev;
+int encoderPinA_value;
+
 const int PWMMIN = 0;
 const int PWMMAX = 255;
 const int maxIntTemp = 50;
@@ -38,10 +46,7 @@ int errCode = 0 ;
 4 = Temperatura interna alta +50°
 */
 float dhtInt = 0;
-//Encoder 
-static int pos = 0;
-int newPos = 0;
-int oldPos = 0;
+
 //PID
 double temp, set, out;
 double Kp=1, Ki=0, Kd=0;
@@ -65,8 +70,8 @@ void EmergenciaCheck(){
         errCode = 1;
         set = 0;
         lcd.clear();
-        lcd.setCursor(0,1);lcd.print("Modo");
-        lcd.setCursor(0,0);lcd.print("Emergencia");
+        lcd.setCursor(0,0);lcd.print("Modo");
+        lcd.setCursor(0,1);lcd.print("Emergencia");
         emergencyStop = true;
     }
         while (emergencyStop == true){
@@ -77,8 +82,8 @@ void EmergenciaCheck(){
         digitalWrite(Led, HIGH);
         delay(1000);
         digitalWrite(Led, LOW);
-        lcd.setCursor(0,1);lcd.print("Modo  " + errCode);
-        lcd.setCursor(0,0);lcd.print("Emergencia");
+        lcd.setCursor(0,0);lcd.print("Modo  " + errCode);
+        lcd.setCursor(0,1);lcd.print("Emergencia");
 }
 }
 void lowVoltageCheck(){
@@ -139,7 +144,7 @@ void store(){
 void off(){
             Serial.println("Off");
    lcd.clear();
-    lcd.setCursor(6,1);lcd.print("OFF");
+    lcd.setCursor(6,0);lcd.print("OFF");
     
     delay(500);
     checkSystemStatus();
@@ -152,19 +157,28 @@ void lcdDefault(){
     lcd.setCursor(10,0);lcd.write(byte(0));     
 }
 void encoder1(){
-    encoder.tick();
-    newPos = encoder.getPosition();
-    if(newPos > oldPos){
-        set = set + 20;
-    }
-    else if(newPos < oldPos){
-        set = set - 20;
-        while(set < 0){
-            set ++;
+    encoderPinA_value = digitalRead(encoderPinA);
+    if (encoderPinA_value != encoderPinA_prev) { // check if knob is rotating
+    // if pin A state changed before pin B, rotation is clockwise
+        if (digitalRead(encoderPinB) != encoderPinA_value) {
+            if(count < 600){
+                count = count + 10;
+            }
+        } else {
+            if(count > 0){
+                count = count - 10;
+            }        
         }
-    }
+        Serial.print("Set = " + count);
+        }
+    encoderPinA_prev = encoderPinA_value;
+        // check if button is pressed (pin SW)
+    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
 }
+void encoder2(){
 
+
+}
 void setup() {
     Serial.begin (9600);
     Serial.println("Iniciando....");
@@ -174,6 +188,10 @@ void setup() {
     pinMode(Store, INPUT);
     pinMode(Emerg, INPUT);
     pinMode(vIn, INPUT);
+    pinMode (encoderPinA, INPUT);
+    pinMode (encoderPinB, INPUT);
+    pinMode(botonEncoder, INPUT_PULLUP);
+    encoderPinA_prev = digitalRead(encoderPinA);
     Serial.print(" pinmode listo...");
     Pid1.SetMode(AUTOMATIC);
     Serial.print(" PID listo....");
@@ -181,8 +199,8 @@ void setup() {
     lcd.init();
     lcd.createChar(0, degree);
     lcd.clear();
-    lcd.setCursor(0,1);lcd.print("Buan");
-    lcd.setCursor(3,0);lcd.print("Industries"); 
+    lcd.setCursor(5,0);lcd.print("Buan");
+    lcd.setCursor(3,1);lcd.print("Industries"); 
     Serial.print(" LCD listo....");
     delay(1500);
     lcdDefault();
