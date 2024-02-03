@@ -22,7 +22,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 //Encoder
 int encoderPinA = 8; // CLK pin
-int encoderPinB = 9; // DT pin
+int encoderPinB = 11; // DT pin
 int botonEncoder = 10; // SW pin
 int count = 0;
 int encoderPinA_prev;
@@ -46,13 +46,12 @@ int errCode = 0 ;
 4 = Temperatura interna alta +50°
 */
 float dhtInt = 0;
-
 //PID
 double temp, set, out;
 double Kp=1, Ki=0, Kd=0;
 PID Pid1(&temp, &out, &set, Kp, Ki, Kd, DIRECT);
-//Funciones
 
+//Funciones
 byte degree[8] = {
 	0b11100,
 	0b10100,
@@ -63,6 +62,29 @@ byte degree[8] = {
 	0b00000,
 	0b00000
 };
+
+void encoder(){
+    encoderPinA_value = digitalRead(encoderPinA);
+    if (encoderPinA_value != encoderPinA_prev) { // check if knob is rotating
+    // if pin A state changed before pin B, rotation is clockwise
+        if (digitalRead(encoderPinB) != encoderPinA_value) {
+            if(count < 600){
+                count = count + 20;
+            }
+        } else {
+            if(count > 0){
+                count = count - 20;
+            }        
+        }
+        Serial.print(" Count = ");
+        Serial.print(count);
+        set = count;
+        }
+    encoderPinA_prev = encoderPinA_value;
+        // check if button is pressed (pin SW)
+    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
+}
+
 void EmergenciaCheck(){
     if (Emerg == HIGH)
     {
@@ -118,21 +140,21 @@ void intTempCheck(){
      Serial.print(dhtInt);
      if (dhtInt > maxIntTemp){
         Serial.println("alta temperatura");
-        
         errCode = 4;
         emergencyStop = true;
         EmergenciaCheck();
      }
 }
 void checkSystemStatus(){
-      //      Serial.println("Checkeando...");
+    /*//      Serial.println("Checkeando...");
     EmergenciaCheck();
     lowVoltageCheck();
     highVoltageCheck();
     intTempCheck();
+    */
 }
 void store(){
-            Serial.println("Stand By");
+    Serial.println("Stand By");
     set = 0;
     Pid1.Compute();
     lcd.clear();
@@ -142,43 +164,20 @@ void store(){
     checkSystemStatus();
 }
 void off(){
-            Serial.println("Off");
-   lcd.clear();
+    Serial.println("Off");
+    lcd.clear();
     lcd.setCursor(6,0);lcd.print("OFF");
-    
+    encoder();
     delay(500);
     checkSystemStatus();
 }
 void lcdDefault(){
-    lcd.clear();
     lcd.setCursor(0,1);lcd.print("PRESET: ");  
     lcd.setCursor(0,0);lcd.print("ACTUAL: "); 
-    lcd.setCursor(10,0);lcd.write(byte(0)); 
-    lcd.setCursor(10,0);lcd.write(byte(0));     
+    lcd.setCursor(14,0);lcd.write(byte(0)); 
+    lcd.setCursor(14,0);lcd.write(byte(0));     
 }
-void encoder1(){
-    encoderPinA_value = digitalRead(encoderPinA);
-    if (encoderPinA_value != encoderPinA_prev) { // check if knob is rotating
-    // if pin A state changed before pin B, rotation is clockwise
-        if (digitalRead(encoderPinB) != encoderPinA_value) {
-            if(count < 600){
-                count = count + 10;
-            }
-        } else {
-            if(count > 0){
-                count = count - 10;
-            }        
-        }
-        Serial.print("Set = " + count);
-        }
-    encoderPinA_prev = encoderPinA_value;
-        // check if button is pressed (pin SW)
-    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
-}
-void encoder2(){
 
-
-}
 void setup() {
     Serial.begin (9600);
     Serial.println("Iniciando....");
@@ -218,10 +217,10 @@ void loop() {
     checkSystemStatus();
     int InSonda = analogRead(Sonda);
   // int InPot = analogRead(Pot);
-  temp = map(InSonda, 0, 1023, 0, 500);
+  //temp = map(InSonda, 0, 1023, 0, 500);
   //  temp = 25;
   //  set = map(InPot, 0, 1023, 0, 480);
-    encoder1();
+    encoder();
     Pid1.Compute();
     delay(100); //solo depuracion
     Serial.print(out); //solo depuracion
@@ -240,8 +239,7 @@ void loop() {
     checkSystemStatus();
    }
    checkSystemStatus();
-   while (set == 0){
+   /*while (set == 0){
     off();
-   }
-    checkSystemStatus();
+   }*/
 }
