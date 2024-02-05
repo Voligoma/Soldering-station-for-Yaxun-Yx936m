@@ -27,9 +27,14 @@ int botonEncoder = 10; // SW pin
 int count = 0;
 int encoderPinA_prev;
 int encoderPinA_value;
+int delayEncoder = 0;
 
-const int PWMMIN = 0;
-const int PWMMAX = 255;
+//Display
+unsigned long currentMillis;
+unsigned long previousMillis;
+unsigned long tasaRefresco = 500; //ms
+int x = 1;
+
 const int maxIntTemp = 50;
 const int maxVolt = 250;
 const int minVolt = -25;
@@ -46,10 +51,9 @@ int errCode = 0 ;
 4 = Temperatura interna alta +50°
 */
 float dhtInt = 0;
-//PID
-double temp, set, out;
-double Kp=1, Ki=0, Kd=0;
-PID Pid1(&temp, &out, &set, Kp, Ki, Kd, DIRECT);
+//"PID"
+int temp, set;
+
 
 //Funciones
 byte degree[8] = {
@@ -62,8 +66,37 @@ byte degree[8] = {
 	0b00000,
 	0b00000
 };
-
-void encoder(){
+void PID(){
+    if(temp >= set){
+        PWMOUT = 0;
+    }
+    if(temp<= set){
+        PWMOUT = 255;
+    }
+}
+void encoder(int delayEncoder){
+    if(delayEncoder =! 0){
+        unsigned long startTime = millis();
+        while(millis() - startTime < 500){
+                encoderPinA_value = digitalRead(encoderPinA);
+        if (encoderPinA_value != encoderPinA_prev) { // check if knob is rotating
+    // if pin A state changed before pin B, rotation is clockwise
+            if (digitalRead(encoderPinB) != encoderPinA_value) {
+                if(count < 600){
+                    count = count + 20;
+            }
+            } else {
+                if(count > 0){
+                 count = count - 20;
+            }        
+        }
+        set = count;
+        }
+    encoderPinA_prev = encoderPinA_value;
+        // check if button is pressed (pin SW)
+    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
+        }
+    }
     encoderPinA_value = digitalRead(encoderPinA);
     if (encoderPinA_value != encoderPinA_prev) { // check if knob is rotating
     // if pin A state changed before pin B, rotation is clockwise
@@ -76,13 +109,13 @@ void encoder(){
                 count = count - 20;
             }        
         }
-        Serial.print(" Count = ");
-        Serial.print(count);
         set = count;
         }
     encoderPinA_prev = encoderPinA_value;
         // check if button is pressed (pin SW)
-    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
+    if (digitalRead(botonEncoder) == LOW){
+        emergencyStop = true ;
+    }
 }
 
 void EmergenciaCheck(){
@@ -97,14 +130,16 @@ void EmergenciaCheck(){
         emergencyStop = true;
     }
         while (emergencyStop == true){
-        set = 0;
-        Pid1.Compute();    
-        lcd.clear();
+            if(x == 1){
+                lcd.clear();
+                x ++;
+            }
+        set = 0;   
         delay(250);
         digitalWrite(Led, HIGH);
         delay(1000);
         digitalWrite(Led, LOW);
-        lcd.setCursor(0,0);lcd.print("Modo  " + errCode);
+        lcd.setCursor(0,0);lcd.print("Modo  ");lcd.setCursor(8,0);lcd.print(errCode);
         lcd.setCursor(0,1);lcd.print("Emergencia");
 }
 }
@@ -146,6 +181,7 @@ void intTempCheck(){
      }
 }
 void checkSystemStatus(){
+    EmergenciaCheck();
     /*//      Serial.println("Checkeando...");
     EmergenciaCheck();
     lowVoltageCheck();
@@ -154,28 +190,29 @@ void checkSystemStatus(){
     */
 }
 void store(){
+    /*
     Serial.println("Stand By");
     set = 0;
-    Pid1.Compute();
     lcd.clear();
     lcd.setCursor(5,1);lcd.print("Stand");
+    delay(500);
     lcd.setCursor(7,0);lcd.print("By");
-    delay(1000);
     checkSystemStatus();
+    */
 }
 void off(){
     Serial.println("Off");
     lcd.clear();
     lcd.setCursor(6,0);lcd.print("OFF");
-    encoder();
-    delay(500);
+    encoder(500);
     checkSystemStatus();
+    lcd.clear();
 }
 void lcdDefault(){
     lcd.setCursor(0,1);lcd.print("PRESET: ");  
     lcd.setCursor(0,0);lcd.print("ACTUAL: "); 
-    lcd.setCursor(14,0);lcd.write(byte(0)); 
-    lcd.setCursor(14,0);lcd.write(byte(0));     
+    lcd.setCursor(10,1);lcd.write(byte(0)); 
+    lcd.setCursor(10,0);lcd.write(byte(0));     
 }
 
 void setup() {
@@ -192,7 +229,6 @@ void setup() {
     pinMode(botonEncoder, INPUT_PULLUP);
     encoderPinA_prev = digitalRead(encoderPinA);
     Serial.print(" pinmode listo...");
-    Pid1.SetMode(AUTOMATIC);
     Serial.print(" PID listo....");
     lcd.backlight();
     lcd.init();
@@ -202,6 +238,7 @@ void setup() {
     lcd.setCursor(3,1);lcd.print("Industries"); 
     Serial.print(" LCD listo....");
     delay(1500);
+    lcd.clear();
     lcdDefault();
     dht.begin();
     Serial.print(" listo");
@@ -214,32 +251,33 @@ void setup() {
 }
 
 void loop() {
+    currentMillis = millis();
     checkSystemStatus();
     int InSonda = analogRead(Sonda);
-  // int InPot = analogRead(Pot);
   //temp = map(InSonda, 0, 1023, 0, 500);
-  //  temp = 25;
-  //  set = map(InPot, 0, 1023, 0, 480);
-    encoder();
-    Pid1.Compute();
-    delay(100); //solo depuracion
-    Serial.print(out); //solo depuracion
-    Serial.print(",");    
+    temp = 25; //Solo depuración
+    encoder(0);
+    PID();  
     Serial.print(set);//solo depuracion
     Serial.print(",");    
     Serial.println(PWMOUT);//solo depuracion
-    PWMOUT = map(out, 0, 480, PWMMIN, PWMMAX);
-    lcd.setCursor(7,1);lcd.print(set);
-    lcd.setCursor(7,0);lcd.print(temp);
+    Serial.println("-------");
+    Serial.println(currentMillis);
+    Serial.println(previousMillis);
+    if(currentMillis - previousMillis >= tasaRefresco){
+        lcdDefault();
+        previousMillis = currentMillis;
+        lcd.setCursor(7,1);lcd.print(set);
+        lcd.setCursor(7,0);lcd.print(temp);
+    }
     analogWrite(Soldador, PWMOUT);
-    lcdDefault();
-    Pid1.Compute();
    while (Store == HIGH){
     store();
     checkSystemStatus();
    }
    checkSystemStatus();
-   /*while (set == 0){
+
+   while (set == 0){
     off();
-   }*/
+   }
 }
