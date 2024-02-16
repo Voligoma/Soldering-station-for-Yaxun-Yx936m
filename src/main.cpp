@@ -1,6 +1,5 @@
 //Librerias
 #include <Arduino.h>
-#include <PID_v1.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include <DHT.h>
@@ -66,14 +65,35 @@ byte degree[8] = {
 	0b00000,
 	0b00000
 };
-void PID(){
-    if(temp >= set){
-        PWMOUT = 0;
-    }
-    if(temp<= set){
+
+void PID(){ //ponele
+    /*!
+  \fn PID()
+    Esta hermosa funcion pretende ser un PID pero en realidad esuna vil mentire xD
+
+  Calcula el valor PWM segun la temperatura segun la siguiente tabla:
+  >-10% = 100% PWM
+  -8% = 75% PWM
+  -5% = 25% PWM
+  -3% = 15% PWM
+  -2% = 8% PWM
+  +2% = 10% PWM
+  +3% = 8% PWM
+  +5% = 5% PWM
+  <8% = 0% PWM
+
+  \snippet src/main.cpp 69
+
+  \sa 
+*/
+    if(set > temp){
         PWMOUT = 255;
     }
+    if(set< temp){
+        PWMOUT = 0;
+    }
 }
+
 void encoder(int delayEncoder){
     if(delayEncoder =! 0){
         unsigned long startTime = millis();
@@ -94,7 +114,7 @@ void encoder(int delayEncoder){
         }
     encoderPinA_prev = encoderPinA_value;
         // check if button is pressed (pin SW)
-    if (digitalRead(botonEncoder) == LOW) Serial.println("Boton presionado");
+    if (digitalRead(botonEncoder) == LOW) ;
         }
     }
     encoderPinA_value = digitalRead(encoderPinA);
@@ -201,7 +221,7 @@ void store(){
     */
 }
 void off(){
-    Serial.println("Off");
+   // Serial.println("Off");
     lcd.clear();
     lcd.setCursor(6,0);lcd.print("OFF");
     encoder(500);
@@ -243,10 +263,11 @@ void setup() {
     dht.begin();
     Serial.print(" listo");
     digitalWrite(Led, HIGH);
-    delay (1000);
+    delay (500);
     digitalWrite(Led, LOW);
+    delay (500);
     digitalWrite(Led, HIGH);
-    delay (1000);
+    delay (250);
     digitalWrite(Led, LOW);
 }
 
@@ -254,16 +275,16 @@ void loop() {
     currentMillis = millis();
     checkSystemStatus();
     int InSonda = analogRead(Sonda);
-  //temp = map(InSonda, 0, 1023, 0, 500);
-    temp = 25; //Solo depuración
+    temp = map(InSonda, 0, 500, 0, 450);
+    //||temp = 25; //Solo depuración
     encoder(0);
     PID();  
-    Serial.print(set);//solo depuracion
-    Serial.print(",");    
-    Serial.println(PWMOUT);//solo depuracion
-    Serial.println("-------");
-    Serial.println(currentMillis);
-    Serial.println(previousMillis);
+   // Serial.print(set);//solo depuracion
+   // Serial.print(",");    
+   // Serial.println(PWMOUT);//solo depuracion
+   // Serial.println("-------");
+   // Serial.println(currentMillis);
+   // Serial.println(previousMillis);
     if(currentMillis - previousMillis >= tasaRefresco){
         lcdDefault();
         previousMillis = currentMillis;
